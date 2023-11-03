@@ -1,9 +1,26 @@
 import MurphForm from "@/components/form";
+import prisma from "@/lib/prisma";
+import Murph from "@/components/murph";
 
-export default function Home() {
+export default async function Home() {
+  const data = await prisma.murph.findMany();
   return (
-    <main className="flex min-h-screen flex-col items-center p-24">
+    <main className="flex min-h-screen flex-col items-center p-8 lg:p-24">
       <MurphForm />
+      {data.map((murph) => (
+        <div key={murph.id}>
+          <Murph
+            date={murph.date}
+            firstMileMin={murph.firstMileMin}
+            firstMileSec={murph.firstMileSec}
+            secondMileMin={murph.secondMileMin}
+            secondMileSec={murph.secondMileSec}
+            pullups={murph.pullups}
+            pushups={murph.pushups}
+            squats={murph.squats}
+          />
+        </div>
+      ))}
     </main>
   );
 }

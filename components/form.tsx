@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -26,14 +27,6 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-const frequencyOptions: { [key: string]: string } = {
-  "Every day": "DAILY",
-  "Twice a week": "BIWEEKLY",
-  "Once a week": "WEEKLY",
-  "Twice a month": "BIMONTLY",
-  "Once a month": "MONTHLY",
-};
-
 const formSchema = z.object({
   date: z.date({
     required_error: "A date is required.",
@@ -50,21 +43,59 @@ const formSchema = z.object({
     })
     .min(0, "You can't run negative seconds bro.")
     .max(59, "Max value is 59."),
+  secondMileMin: z.coerce
+    .number({
+      required_error: "Required.",
+    })
+    .min(3, "I know you can't run a mile that fast...")
+    .max(60, "Max value is 60."),
+  secondMileSec: z.coerce
+    .number({
+      required_error: "Required.",
+    })
+    .min(0, "You can't run negative seconds bro.")
+    .max(59, "Max value is 59."),
+  pullups: z.coerce
+    .number({
+      required_error: "Required.",
+    })
+    .min(0, "Negative pullups? You're weak."),
+  pushups: z.coerce
+    .number({
+      required_error: "Required.",
+    })
+    .min(0, "Negative pushups? You're weak."),
+  squats: z.coerce
+    .number({
+      required_error: "Required.",
+    })
+    .min(0, "What even are negative squats?"),
 });
 
-const onSubmit = async (values: z.infer<typeof formSchema>) => {
-  console.log(values);
-};
-
 export default function MurphForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       date: new Date(),
       firstMileMin: 0,
       firstMileSec: 0,
+      secondMileMin: 0,
+      secondMileSec: 0,
+      pullups: 0,
+      pushups: 0,
+      squats: 0,
     },
   });
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const response = await fetch("/api/murph", {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+    const data = await response.json();
+    router.refresh();
+  };
 
   return (
     <>
@@ -73,12 +104,13 @@ export default function MurphForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
+          {/* Date */}
           <FormField
             control={form.control}
             name="date"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Date of birth</FormLabel>
+                <FormLabel>Date</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -110,13 +142,14 @@ export default function MurphForm() {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>
-                  Your date of birth is used to calculate your age.
+                <FormDescription className="sr-only">
+                  The date of your workout.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+          {/* First Mile */}
           <div>
             <h3 className="text-sm font-medium">First Mile Time</h3>
             <div className="flex gap-4">
@@ -165,6 +198,104 @@ export default function MurphForm() {
                 )}
               />
             </div>
+          </div>
+          {/* Second Mile */}
+          <div>
+            <h3 className="text-sm font-medium">Second Mile Time</h3>
+            <div className="flex gap-4">
+              <FormField
+                control={form.control}
+                name="secondMileMin"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs text-slate-400">
+                      Minutes
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Minutes..."
+                        type="number"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription className="sr-only">
+                      Second mile minutes.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="secondMileSec"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs text-slate-400">
+                      Seconds
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Seconds..."
+                        type="number"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription className="sr-only">
+                      Second mile seconds.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <FormField
+              control={form.control}
+              name="pullups"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Pullups</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Pullups..." type="number" {...field} />
+                  </FormControl>
+                  <FormDescription className="sr-only">
+                    Number of pullups.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="pushups"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Pushups</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Pushups..." type="number" {...field} />
+                  </FormControl>
+                  <FormDescription className="sr-only">
+                    Number of pushups.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="squats"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Squats</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Squats..." type="number" {...field} />
+                  </FormControl>
+                  <FormDescription className="sr-only">
+                    Number of squats.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
           <Button variant="outline" type="submit">
             Submit
