@@ -98,7 +98,7 @@ export default function MurphForm() {
   };
 
   return (
-    <>
+    <div className="max-w-[500px] border border-slate-200 p-4 rounded-lg">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -249,8 +249,8 @@ export default function MurphForm() {
                 )}
               />
             </div>
-            <hr className="my-2" />
-            <div className="mt-6">
+            <hr className="my-8" />
+            <div>
               <FormField
                 control={form.control}
                 name="pullups"
@@ -309,11 +309,11 @@ export default function MurphForm() {
               />
             </div>
           </div>
-          <Button variant="outline" type="submit">
+          <Button type="submit" className="w-full">
             Submit
           </Button>
         </form>
       </Form>
-    </>
+    </div>
   );
 }

@@ -5,7 +5,7 @@ import Murph from "@/components/murph";
 export default async function Home() {
   const data = await prisma.murph.findMany();
   return (
-    <main className="flex min-h-screen flex-col items-center p-8 lg:p-24">
+    <main className="flex min-h-screen flex-col p-8 lg:p-24">
       <MurphForm />
       {data.map((murph) => (
         <div key={murph.id} className="w-full">
