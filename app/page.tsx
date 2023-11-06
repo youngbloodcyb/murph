@@ -8,7 +8,7 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col items-center p-8 lg:p-24">
       <MurphForm />
       {data.map((murph) => (
-        <div key={murph.id}>
+        <div key={murph.id} className="w-full">
           <Murph
             date={murph.date}
             firstMileMin={murph.firstMileMin}

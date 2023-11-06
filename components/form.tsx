@@ -149,6 +149,7 @@ export default function MurphForm() {
               </FormItem>
             )}
           />
+          <hr className="my-2" />
           {/* First Mile */}
           <div>
             <h3 className="text-sm font-medium">First Mile Time</h3>
@@ -248,54 +249,65 @@ export default function MurphForm() {
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="pullups"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Pullups</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Pullups..." type="number" {...field} />
-                  </FormControl>
-                  <FormDescription className="sr-only">
-                    Number of pullups.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="pushups"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Pushups</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Pushups..." type="number" {...field} />
-                  </FormControl>
-                  <FormDescription className="sr-only">
-                    Number of pushups.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="squats"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Squats</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Squats..." type="number" {...field} />
-                  </FormControl>
-                  <FormDescription className="sr-only">
-                    Number of squats.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <hr className="my-2" />
+            <div className="mt-6">
+              <FormField
+                control={form.control}
+                name="pullups"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pullups</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Pullups..."
+                        type="number"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription className="sr-only">
+                      Number of pullups.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="pushups"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pushups</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Pushups..."
+                        type="number"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription className="sr-only">
+                      Number of pushups.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="squats"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Squats</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Squats..." type="number" {...field} />
+                    </FormControl>
+                    <FormDescription className="sr-only">
+                      Number of squats.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
           <Button variant="outline" type="submit">
             Submit
