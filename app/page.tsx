@@ -1,6 +1,7 @@
 import { Card, LineChart, Title } from "@tremor/react";
 import prisma from "@/lib/prisma";
 import Murph from "@/components/murph";
+import { ChartTabs } from "@/components/tabs";
 
 export default async function Home() {
   const data = await prisma.murph.findMany({
@@ -39,10 +40,8 @@ export default async function Home() {
           View more workouts
         </div>
       </div>
-      <Card
-        className="w-1/2 rounded-lg flex-grow"
-        style={{ maxHeight: "calc(100% / 3)" }}
-      >
+      <ChartTabs data={chartData} />
+      {/* <Card className="w-1/2 rounded-lg flex-grow">
         <Title>Reps</Title>
         <LineChart
           className="mt-6"
@@ -52,7 +51,7 @@ export default async function Home() {
           colors={["indigo", "cyan", "emerald"]}
           yAxisWidth={40}
         />
-      </Card>
+      </Card> */}
     </main>
   );
 }
