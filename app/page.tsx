@@ -1,7 +1,7 @@
-import { Card, LineChart, Title } from "@tremor/react";
 import prisma from "@/lib/prisma";
 import Murph from "@/components/murph";
 import { ChartTabs } from "@/components/tabs";
+import MurphForm from "@/components/form";
 
 export default async function Home() {
   const data = await prisma.murph.findMany({
@@ -10,30 +10,23 @@ export default async function Home() {
     },
   });
 
-  const chartData = data.reverse().map((item) => {
+  const chartData = [...data].reverse().map((item) => {
     return {
-      date: item.date.toDateString(),
-      pullups: item.pullups,
-      pushups: item.pushups,
-      squats: item.squats,
+      Date: item.date.toDateString(),
+      Pullups: item.pullups,
+      Pushups: item.pushups,
+      Squats: item.squats,
+      "First Mile": item.firstMileMin * 60 + item.firstMileSec,
+      "Second Mile": item.secondMileMin * 60 + item.secondMileSec,
     };
   });
 
   return (
-    <main className="h-auto flex flex-grow p-8 lg:p-16 gap-4">
-      <div className="w-1/2 h-max space-y-4">
+    <main className="h-auto grid grid-cols-2 p-8 lg:p-16 gap-4">
+      <div className="h-max space-y-4">
         {data.slice(0, 3).map((murph) => (
           <div key={murph.id} className="w-full">
-            <Murph
-              date={murph.date}
-              firstMileMin={murph.firstMileMin}
-              firstMileSec={murph.firstMileSec}
-              secondMileMin={murph.secondMileMin}
-              secondMileSec={murph.secondMileSec}
-              pullups={murph.pullups}
-              pushups={murph.pushups}
-              squats={murph.squats}
-            />
+            <Murph data={murph} />
           </div>
         ))}
         <div className="shadow-sm w-full p-4 border border-slate-200 rounded-lg">
@@ -41,17 +34,7 @@ export default async function Home() {
         </div>
       </div>
       <ChartTabs data={chartData} />
-      {/* <Card className="w-1/2 rounded-lg flex-grow">
-        <Title>Reps</Title>
-        <LineChart
-          className="mt-6"
-          data={chartData}
-          index="date"
-          categories={["pullups", "pushups", "squats"]}
-          colors={["indigo", "cyan", "emerald"]}
-          yAxisWidth={40}
-        />
-      </Card> */}
+      {/* <MurphForm /> */}
     </main>
   );
 }
