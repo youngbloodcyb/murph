@@ -1,4 +1,3 @@
-import MurphForm from "@/components/form";
 import { Card, LineChart, Title } from "@tremor/react";
 import prisma from "@/lib/prisma";
 import Murph from "@/components/murph";
@@ -20,10 +19,9 @@ export default async function Home() {
   });
 
   return (
-    <main className="min-h-screen flex p-8 lg:p-16 gap-4">
-      <MurphForm />
-      <div className="w-1/2">
-        {data.map((murph) => (
+    <main className="h-auto flex flex-grow p-8 lg:p-16 gap-4">
+      <div className="w-1/2 h-max space-y-4">
+        {data.slice(0, 3).map((murph) => (
           <div key={murph.id} className="w-full">
             <Murph
               date={murph.date}
@@ -37,8 +35,14 @@ export default async function Home() {
             />
           </div>
         ))}
+        <div className="shadow-sm w-full p-4 border border-slate-200 rounded-lg">
+          View more workouts
+        </div>
       </div>
-      <Card className="w-1/2 rounded-lg">
+      <Card
+        className="w-1/2 rounded-lg flex-grow"
+        style={{ maxHeight: "calc(100% / 3)" }}
+      >
         <Title>Reps</Title>
         <LineChart
           className="mt-6"

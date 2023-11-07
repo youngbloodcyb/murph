@@ -11,7 +11,7 @@ export default function Murph({
   squats,
 }: any) {
   return (
-    <div className="shadow-sm w-full p-4 border border-slate-200 rounded-lg mb-4">
+    <div className="shadow-sm w-full p-4 border border-slate-200 rounded-lg">
       <div className="flex gap-4">
         <div className="p-1">
           <ActivitySquare className="w-10 h-10 text-slate-400" />
