@@ -1,6 +1,7 @@
 "use client";
 
 type ChartData = {
+  index: number;
   Date: string;
   Pullups: number;
   Pushups: number;
@@ -8,6 +9,8 @@ type ChartData = {
   "First Mile": number;
   "Second Mile": number;
 }[];
+
+import { useState, useEffect } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -43,6 +46,13 @@ const customTooltip = ({ payload, active }: any) => {
 };
 
 export function ChartTabs({ data }: { data: ChartData }) {
+  const [value, setValue] = useState<ChartData | null>(null);
+  const [previousValue, setPreviousValue] = useState<ChartData | null>(null);
+  useEffect(() => {
+    let index = value?.index - 1 ?? 0;
+    setPreviousValue(data[index]);
+  }, [value]);
+
   return (
     <div className="h-full flex flex-col">
       <Tabs defaultValue="reps" className="h-full flex flex-col gap-2">
@@ -54,8 +64,11 @@ export function ChartTabs({ data }: { data: ChartData }) {
             Mile times
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="reps" className="h-full">
-          <Card className="rounded-lg h-full">
+        <TabsContent
+          value="reps"
+          className="h-full flex flex-col justify-between gap-4"
+        >
+          <Card className="rounded-lg">
             <Title>Reps</Title>
             <LineChart
               className="mt-6 bx-border"
@@ -64,7 +77,27 @@ export function ChartTabs({ data }: { data: ChartData }) {
               categories={["Pullups", "Pushups", "Squats"]}
               colors={["indigo", "cyan", "emerald"]}
               yAxisWidth={40}
+              onValueChange={(v) => setValue(v)}
+              connectNulls={true}
             />
+          </Card>
+          <Card className="flex-grow">
+            <Flex justifyContent="between" alignItems="center">
+              <Text>Sales</Text>
+              <BadgeDelta
+                deltaType="moderateIncrease"
+                isIncreasePositive={true}
+                size="xs"
+              >
+                {(
+                  ((value?.["Pushups"] - previousValue?.["Pushups"]) /
+                    previousValue?.["Pushups"]) *
+                  100
+                ).toFixed(2)}
+                %
+              </BadgeDelta>
+            </Flex>
+            <Metric>{value?.["Pushups"]}</Metric>
           </Card>
         </TabsContent>
         <TabsContent value="time" className="h-full">

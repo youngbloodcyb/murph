@@ -10,8 +10,9 @@ export default async function Home() {
     },
   });
 
-  const chartData = [...data].reverse().map((item) => {
+  const chartData = [...data].reverse().map((item, index) => {
     return {
+      index: index,
       Date: item.date.toDateString(),
       Pullups: item.pullups,
       Pushups: item.pushups,
@@ -23,7 +24,7 @@ export default async function Home() {
 
   return (
     <main className="h-auto grid grid-cols-2 p-8 lg:p-16 gap-4">
-      <div className="h-max space-y-4">
+      {/* <div className="h-max space-y-4">
         {data.slice(0, 3).map((murph) => (
           <div key={murph.id} className="w-full">
             <Murph data={murph} />
@@ -32,9 +33,9 @@ export default async function Home() {
         <div className="shadow-sm w-full p-4 border border-slate-200 rounded-lg">
           View more workouts
         </div>
-      </div>
+      </div> */}
+      <MurphForm />
       <ChartTabs data={chartData} />
-      {/* <MurphForm /> */}
     </main>
   );
 }
