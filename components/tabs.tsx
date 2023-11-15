@@ -23,6 +23,8 @@ import {
   BadgeDelta,
 } from "@tremor/react";
 
+import { Separator } from "@/components/ui/separator";
+
 const customTooltip = ({ payload, active }: any) => {
   if (!active || !payload) return null;
   return (
@@ -81,23 +83,67 @@ export function ChartTabs({ data }: { data: ChartData }) {
               connectNulls={true}
             />
           </Card>
-          <Card className="flex-grow">
-            <Flex justifyContent="between" alignItems="center">
-              <Text>Sales</Text>
-              <BadgeDelta
-                deltaType="moderateIncrease"
-                isIncreasePositive={true}
-                size="xs"
-              >
-                {(
-                  ((value?.["Pushups"] - previousValue?.["Pushups"]) /
-                    previousValue?.["Pushups"]) *
-                  100
-                ).toFixed(2)}
-                %
-              </BadgeDelta>
-            </Flex>
-            <Metric>{value?.["Pushups"]}</Metric>
+          <Card className="flex-grow h-full">
+            {value && (
+              <div className="space-y-2">
+                <div>
+                  <Flex justifyContent="between" alignItems="center">
+                    <Text>Pullups</Text>
+                    <BadgeDelta
+                      deltaType="moderateIncrease"
+                      isIncreasePositive={true}
+                      size="xs"
+                    >
+                      {(
+                        ((value?.["Pullups"] - previousValue?.["Pullups"]) /
+                          previousValue?.["Pullups"]) *
+                        100
+                      ).toFixed(2)}
+                      %
+                    </BadgeDelta>
+                  </Flex>
+                  <Metric className="text-2xl">{value?.["Pullups"]}</Metric>
+                </div>
+                <Separator />
+                <div>
+                  <Flex justifyContent="between" alignItems="center">
+                    <Text>Pushups</Text>
+                    <BadgeDelta
+                      deltaType="moderateIncrease"
+                      isIncreasePositive={true}
+                      size="xs"
+                    >
+                      {(
+                        ((value?.["Pushups"] - previousValue?.["Pushups"]) /
+                          previousValue?.["Pushups"]) *
+                        100
+                      ).toFixed(2)}
+                      %
+                    </BadgeDelta>
+                  </Flex>
+                  <Metric className="text-2xl">{value?.["Pushups"]}</Metric>
+                </div>
+                <Separator />
+                <div>
+                  <Flex justifyContent="between" alignItems="center">
+                    <Text>Squats</Text>
+                    <BadgeDelta
+                      deltaType="moderateIncrease"
+                      isIncreasePositive={true}
+                      size="xs"
+                    >
+                      {(
+                        ((value?.["Squats"] - previousValue?.["Squats"]) /
+                          previousValue?.["Squats"]) *
+                        100
+                      ).toFixed(2)}
+                      %
+                    </BadgeDelta>
+                  </Flex>
+                  <Metric className="text-2xl">{value?.["Squats"]}</Metric>
+                </div>
+              </div>
+            )}
           </Card>
         </TabsContent>
         <TabsContent value="time" className="h-full">
