@@ -56,7 +56,7 @@ export function ChartTabs({ data }: { data: ChartData }) {
   }, [value]);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full">
       <Tabs defaultValue="reps" className="h-full flex flex-col gap-2">
         <TabsList className="w-full grid grid-cols-2 rounded-lg">
           <TabsTrigger className="rounded-lg" value="reps">
@@ -66,85 +66,84 @@ export function ChartTabs({ data }: { data: ChartData }) {
             Mile times
           </TabsTrigger>
         </TabsList>
-        <TabsContent
-          value="reps"
-          className="h-full flex flex-col justify-between gap-4"
-        >
-          <Card className="rounded-lg">
-            <Title>Reps</Title>
-            <LineChart
-              className="mt-6 bx-border"
-              data={data}
-              index="Date"
-              categories={["Pullups", "Pushups", "Squats"]}
-              colors={["indigo", "cyan", "emerald"]}
-              yAxisWidth={40}
-              onValueChange={(v) => setValue(v)}
-              connectNulls={true}
-            />
-          </Card>
-          <Card className="flex-grow h-full">
-            {value && (
-              <div className="space-y-2">
-                <div>
-                  <Flex justifyContent="between" alignItems="center">
-                    <Text>Pullups</Text>
-                    <BadgeDelta
-                      deltaType="moderateIncrease"
-                      isIncreasePositive={true}
-                      size="xs"
-                    >
-                      {(
-                        ((value?.["Pullups"] - previousValue?.["Pullups"]) /
-                          previousValue?.["Pullups"]) *
-                        100
-                      ).toFixed(2)}
-                      %
-                    </BadgeDelta>
-                  </Flex>
-                  <Metric className="text-2xl">{value?.["Pullups"]}</Metric>
+        <TabsContent value="reps" className="h-full">
+          <div className="flex flex-col justify-between gap-4 h-full">
+            <Card className="rounded-lg">
+              <Title>Reps</Title>
+              <LineChart
+                className="mt-6 bx-border"
+                data={data}
+                index="Date"
+                categories={["Pullups", "Pushups", "Squats"]}
+                colors={["indigo", "cyan", "emerald"]}
+                yAxisWidth={40}
+                onValueChange={(v) => setValue(v)}
+                connectNulls={true}
+              />
+            </Card>
+            <Card className="h-full">
+              {value?.eventType === "dot" && (
+                <div className="space-y-1">
+                  <div>
+                    <Flex justifyContent="between" alignItems="center">
+                      <Text>Pullups</Text>
+                      <BadgeDelta
+                        deltaType="moderateIncrease"
+                        isIncreasePositive={true}
+                        size="xs"
+                      >
+                        {(
+                          ((value?.["Pullups"] - previousValue?.["Pullups"]) /
+                            previousValue?.["Pullups"]) *
+                          100
+                        ).toFixed(2)}
+                        %
+                      </BadgeDelta>
+                    </Flex>
+                    <Metric className="text-xl">{value?.["Pullups"]}</Metric>
+                  </div>
+                  <Separator />
+                  <div>
+                    <Flex justifyContent="between" alignItems="center">
+                      <Text>Pushups</Text>
+                      <BadgeDelta
+                        deltaType="moderateIncrease"
+                        isIncreasePositive={true}
+                        size="xs"
+                      >
+                        {(
+                          ((value?.["Pushups"] - previousValue?.["Pushups"]) /
+                            previousValue?.["Pushups"]) *
+                          100
+                        ).toFixed(2)}
+                        %
+                      </BadgeDelta>
+                    </Flex>
+                    <Metric className="text-xl">{value?.["Pushups"]}</Metric>
+                  </div>
+                  <Separator />
+                  <div>
+                    <Flex justifyContent="between" alignItems="center">
+                      <Text>Squats</Text>
+                      <BadgeDelta
+                        deltaType="moderateIncrease"
+                        isIncreasePositive={true}
+                        size="xs"
+                      >
+                        {(
+                          ((value?.["Squats"] - previousValue?.["Squats"]) /
+                            previousValue?.["Squats"]) *
+                          100
+                        ).toFixed(2)}
+                        %
+                      </BadgeDelta>
+                    </Flex>
+                    <Metric className="text-xl">{value?.["Squats"]}</Metric>
+                  </div>
                 </div>
-                <Separator />
-                <div>
-                  <Flex justifyContent="between" alignItems="center">
-                    <Text>Pushups</Text>
-                    <BadgeDelta
-                      deltaType="moderateIncrease"
-                      isIncreasePositive={true}
-                      size="xs"
-                    >
-                      {(
-                        ((value?.["Pushups"] - previousValue?.["Pushups"]) /
-                          previousValue?.["Pushups"]) *
-                        100
-                      ).toFixed(2)}
-                      %
-                    </BadgeDelta>
-                  </Flex>
-                  <Metric className="text-2xl">{value?.["Pushups"]}</Metric>
-                </div>
-                <Separator />
-                <div>
-                  <Flex justifyContent="between" alignItems="center">
-                    <Text>Squats</Text>
-                    <BadgeDelta
-                      deltaType="moderateIncrease"
-                      isIncreasePositive={true}
-                      size="xs"
-                    >
-                      {(
-                        ((value?.["Squats"] - previousValue?.["Squats"]) /
-                          previousValue?.["Squats"]) *
-                        100
-                      ).toFixed(2)}
-                      %
-                    </BadgeDelta>
-                  </Flex>
-                  <Metric className="text-2xl">{value?.["Squats"]}</Metric>
-                </div>
-              </div>
-            )}
-          </Card>
+              )}
+            </Card>
+          </div>
         </TabsContent>
         <TabsContent value="time" className="h-full">
           <div className="h-full flex flex-col gap-4">

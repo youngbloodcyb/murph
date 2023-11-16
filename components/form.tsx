@@ -98,7 +98,7 @@ export default function MurphForm() {
   };
 
   return (
-    <div className="w-full border border-slate-200 p-4 rounded-lg">
+    <div className="w-full border border-slate-200 p-4 rounded-lg shadow-sm">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
