@@ -24,6 +24,8 @@ import {
 } from "@tremor/react";
 
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { ArrowUpRight } from "lucide-react";
 
 const customTooltip = ({ payload, active }: any) => {
   if (!active || !payload) return null;
@@ -50,15 +52,39 @@ const customTooltip = ({ payload, active }: any) => {
 export function ChartTabs({ data }: { data: ChartData }) {
   const [value, setValue] = useState<ChartData | null>(null);
   const [previousValue, setPreviousValue] = useState<ChartData | null>(null);
+  const [calculatedValue, setCalculatedValue] = useState<any>(null);
+  const firstMileAverage =
+    data.reduce((sum, item) => sum + item["First Mile"], 0) / data.length;
+  const secondMileAverage =
+    data.reduce((sum, item) => sum + item["Second Mile"], 0) / data.length;
   useEffect(() => {
     let index = value?.index - 1 ?? 0;
     setPreviousValue(data[index]);
-  }, [value]);
+    setCalculatedValue({
+      pullups: (
+        ((value?.["Pullups"] - previousValue?.["Pullups"]) /
+          previousValue?.["Pullups"]) *
+        100
+      ).toFixed(2),
+      pushups: (
+        ((value?.["Pushups"] - previousValue?.["Pushups"]) /
+          previousValue?.["Pushups"]) *
+        100
+      ).toFixed(2),
+      squats: (
+        ((value?.["Squats"] - previousValue?.["Squats"]) /
+          previousValue?.["Squats"]) *
+        100
+      ).toFixed(2),
+    });
+  }, [value, previousValue]);
+
+  console.log(value);
 
   return (
     <div className="h-full">
       <Tabs defaultValue="reps" className="h-full flex flex-col gap-2">
-        <TabsList className="w-full grid grid-cols-2 rounded-lg">
+        <TabsList className="w-full grid grid-cols-2 rounded-lg shadow-sm">
           <TabsTrigger className="rounded-lg" value="reps">
             Reps
           </TabsTrigger>
@@ -82,22 +108,22 @@ export function ChartTabs({ data }: { data: ChartData }) {
               />
             </Card>
             <Card className="h-full">
-              {value?.eventType === "dot" && (
+              {value?.eventType === "dot" ? (
                 <div className="space-y-1">
                   <div>
                     <Flex justifyContent="between" alignItems="center">
                       <Text>Pullups</Text>
                       <BadgeDelta
-                        deltaType="moderateIncrease"
-                        isIncreasePositive={true}
+                        deltaType={
+                          calculatedValue.pullups > 0
+                            ? "moderateIncrease"
+                            : calculatedValue.pullups < 0
+                            ? "moderateDecrease"
+                            : "unchanged"
+                        }
                         size="xs"
                       >
-                        {(
-                          ((value?.["Pullups"] - previousValue?.["Pullups"]) /
-                            previousValue?.["Pullups"]) *
-                          100
-                        ).toFixed(2)}
-                        %
+                        {calculatedValue.pullups}%
                       </BadgeDelta>
                     </Flex>
                     <Metric className="text-xl">{value?.["Pullups"]}</Metric>
@@ -107,16 +133,16 @@ export function ChartTabs({ data }: { data: ChartData }) {
                     <Flex justifyContent="between" alignItems="center">
                       <Text>Pushups</Text>
                       <BadgeDelta
-                        deltaType="moderateIncrease"
-                        isIncreasePositive={true}
+                        deltaType={
+                          calculatedValue.pushups > 0
+                            ? "moderateIncrease"
+                            : calculatedValue.pushups < 0
+                            ? "moderateDecrease"
+                            : "unchanged"
+                        }
                         size="xs"
                       >
-                        {(
-                          ((value?.["Pushups"] - previousValue?.["Pushups"]) /
-                            previousValue?.["Pushups"]) *
-                          100
-                        ).toFixed(2)}
-                        %
+                        {calculatedValue.pushups}%
                       </BadgeDelta>
                     </Flex>
                     <Metric className="text-xl">{value?.["Pushups"]}</Metric>
@@ -126,20 +152,26 @@ export function ChartTabs({ data }: { data: ChartData }) {
                     <Flex justifyContent="between" alignItems="center">
                       <Text>Squats</Text>
                       <BadgeDelta
-                        deltaType="moderateIncrease"
-                        isIncreasePositive={true}
+                        deltaType={
+                          calculatedValue.squats > 0
+                            ? "moderateIncrease"
+                            : calculatedValue.squats < 0
+                            ? "moderateDecrease"
+                            : "unchanged"
+                        }
                         size="xs"
                       >
-                        {(
-                          ((value?.["Squats"] - previousValue?.["Squats"]) /
-                            previousValue?.["Squats"]) *
-                          100
-                        ).toFixed(2)}
-                        %
+                        {calculatedValue.squats}%
                       </BadgeDelta>
                     </Flex>
                     <Metric className="text-xl">{value?.["Squats"]}</Metric>
                   </div>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-sm text-slate-500">
+                    Select a spot on the chart to see a breakdown.
+                  </p>
                 </div>
               )}
             </Card>
@@ -159,18 +191,37 @@ export function ChartTabs({ data }: { data: ChartData }) {
                 customTooltip={customTooltip}
               />
             </Card>
-            <Card>
-              <Flex justifyContent="between" alignItems="center">
-                <Text>Sales</Text>
-                <BadgeDelta
-                  deltaType="moderateIncrease"
-                  isIncreasePositive={true}
-                  size="xs"
+            <Card className="h-full p-4">
+              <div className="flex flex-col justify-between h-full">
+                <div className="space-y-4">
+                  <div>
+                    <Flex justifyContent="between" alignItems="center">
+                      <Text>Average First Mile</Text>
+                      <Metric className="text-xl">
+                        {Math.floor(firstMileAverage / 60)}:
+                        {(firstMileAverage % 60).toString().padStart(2, "0")}
+                      </Metric>
+                    </Flex>
+                  </div>
+                  <Separator />
+                  <div>
+                    <Flex justifyContent="between" alignItems="center">
+                      <Text>Average Second Mile</Text>
+                      <Metric className="text-xl">
+                        {Math.floor(secondMileAverage / 60)}:
+                        {(secondMileAverage % 60).toString().padStart(2, "0")}
+                      </Metric>
+                    </Flex>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  className="text-slate-500 inline-flex gap-2 "
                 >
-                  +12.3%
-                </BadgeDelta>
-              </Flex>
-              <Metric>$ 23,456</Metric>
+                  View all workouts
+                  <ArrowUpRight className="w-4" />
+                </Button>
+              </div>
             </Card>
           </div>
         </TabsContent>

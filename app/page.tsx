@@ -23,17 +23,7 @@ export default async function Home() {
   });
 
   return (
-    <main className="h-auto grid grid-cols-2 p-8 lg:p-16 gap-4">
-      {/* <div className="h-max space-y-4">
-        {data.slice(0, 3).map((murph) => (
-          <div key={murph.id} className="w-full">
-            <Murph data={murph} />
-          </div>
-        ))}
-        <div className="shadow-sm w-full p-4 border border-slate-200 rounded-lg">
-          View more workouts
-        </div>
-      </div> */}
+    <main className="h-auto grid grid-cols-1 md:grid-cols-2 p-8 lg:p-16 gap-4">
       <MurphForm />
       <ChartTabs data={chartData} />
     </main>
