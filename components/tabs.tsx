@@ -1,3 +1,5 @@
+// TO-DO: fix any types
+
 "use client";
 
 type ChartData = {
@@ -31,7 +33,7 @@ const customTooltip = ({ payload, active }: any) => {
   if (!active || !payload) return null;
   return (
     <div className="w-56 rounded-tremor-default text-tremor-default bg-tremor-background p-2 shadow-tremor-dropdown border border-tremor-border">
-      {payload.map((category, index) => (
+      {payload.map((category: any, index: number) => (
         <div key={index} className="flex flex-1 space-x-2.5">
           <div
             className={`w-1 flex flex-col bg-${category.color}-500 rounded`}
@@ -50,8 +52,8 @@ const customTooltip = ({ payload, active }: any) => {
 };
 
 export function ChartTabs({ data }: { data: ChartData }) {
-  const [value, setValue] = useState<ChartData | null>(null);
-  const [previousValue, setPreviousValue] = useState<ChartData | null>(null);
+  const [value, setValue] = useState<any>(null);
+  const [previousValue, setPreviousValue] = useState<any>(null);
   const [calculatedValue, setCalculatedValue] = useState<any>(null);
   const firstMileAverage =
     data.reduce((sum, item) => sum + item["First Mile"], 0) / data.length;
@@ -59,7 +61,7 @@ export function ChartTabs({ data }: { data: ChartData }) {
     data.reduce((sum, item) => sum + item["Second Mile"], 0) / data.length;
   useEffect(() => {
     let index = value?.index - 1 ?? 0;
-    setPreviousValue(data[index]);
+    setPreviousValue([data[index]]);
     setCalculatedValue({
       pullups: (
         ((value?.["Pullups"] - previousValue?.["Pullups"]) /
