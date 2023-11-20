@@ -85,9 +85,6 @@ export function ChartTabs({ data }: { data: ChartData }) {
     });
   }, [value, previousValue]);
 
-  console.log(value);
-  console.log(JSON.stringify(previousValue));
-
   return (
     <div className="h-full">
       <Tabs defaultValue="reps" className="h-full flex flex-col gap-2">
