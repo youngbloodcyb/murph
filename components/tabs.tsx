@@ -218,7 +218,7 @@ export function ChartTabs({ data }: { data: ChartData }) {
                     </Flex>
                   </div>
                 </div>
-                <Link href="/all">
+                <Link href="/all" className="mt-4 md:mt-0">
                   <Button
                     variant="outline"
                     className="text-slate-500 inline-flex gap-2 w-full"
