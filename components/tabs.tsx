@@ -203,7 +203,7 @@ export function ChartTabs({ data }: { data: ChartData }) {
                       <Text>Average First Mile</Text>
                       <Metric className="text-xl">
                         {Math.floor(firstMileAverage / 60)}:
-                        {(firstMileAverage % 60).toString().padStart(2, "0")}
+                        {(firstMileAverage % 60).toFixed(2).padStart(5, "0")}
                       </Metric>
                     </Flex>
                   </div>
@@ -213,7 +213,7 @@ export function ChartTabs({ data }: { data: ChartData }) {
                       <Text>Average Second Mile</Text>
                       <Metric className="text-xl">
                         {Math.floor(secondMileAverage / 60)}:
-                        {(secondMileAverage % 60).toString().padStart(2, "0")}
+                        {(secondMileAverage % 60).toFixed(2).padStart(5, "0")}
                       </Metric>
                     </Flex>
                   </div>
