@@ -13,6 +13,7 @@ type ChartData = {
 }[];
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -61,7 +62,10 @@ export function ChartTabs({ data }: { data: ChartData }) {
     data.reduce((sum, item) => sum + item["Second Mile"], 0) / data.length;
   useEffect(() => {
     let index = value?.index - 1 ?? 0;
-    setPreviousValue([data[index]]);
+    setPreviousValue(data[index]);
+  }, [value, data]);
+
+  useEffect(() => {
     setCalculatedValue({
       pullups: (
         ((value?.["Pullups"] - previousValue?.["Pullups"]) /
@@ -82,6 +86,7 @@ export function ChartTabs({ data }: { data: ChartData }) {
   }, [value, previousValue]);
 
   console.log(value);
+  console.log(JSON.stringify(previousValue));
 
   return (
     <div className="h-full">
@@ -216,13 +221,15 @@ export function ChartTabs({ data }: { data: ChartData }) {
                     </Flex>
                   </div>
                 </div>
-                <Button
-                  variant="outline"
-                  className="text-slate-500 inline-flex gap-2 "
-                >
-                  View all workouts
-                  <ArrowUpRight className="w-4" />
-                </Button>
+                <Link href="/all">
+                  <Button
+                    variant="outline"
+                    className="text-slate-500 inline-flex gap-2 w-full"
+                  >
+                    View all workouts
+                    <ArrowUpRight className="w-4" />
+                  </Button>
+                </Link>
               </div>
             </Card>
           </div>
